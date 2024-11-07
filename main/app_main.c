@@ -59,21 +59,21 @@
 
 # define PWD 1234  
 
-#define W_DEVICE_ID "65774aa82623fd911ab650c1" //Use o DeviceID no Wegnology    
+#define W_DEVICE_ID "6717a1d988a602478ef5db96" //Use o DeviceID no Wegnology   
 
-#define W_ACCESS_KEY "76ac5ed2-ed18-4e96-9e02-d2dd572db083" //use a chave de acesso e a senha  
+#define W_ACCESS_KEY "643b5f58-1a67-4efc-9096-2b9bda8991a8" //use a chave de acesso e a senha 
 
-#define W_PASSWORD "f52797619b7205bc2ac8d796d80fd0cb23f988e882cd0b82d575b26939f78c1c"  
+#define W_PASSWORD "48708c659646f9bff0fd9b5240e9bbbec2aa5b295a89b9736ae7d064db9da0df" 
 
-#define W_TOPICO_PUBLICAR "wnology/65774aa82623fd911ab650c1/state" //esse número no meio do tópico deve ser mudado pelo ID do seu device Wegnology  
+#define W_TOPICO_PUBLICAR "wnology/6717a1d988a602478ef5db96/state" //esse número no meio do tópico deve ser mudado pelo ID do seu device Wegnology 
 
-#define W_TOPICO_SUBSCREVER "wnology/65774aa82623fd911ab650c1/command" // aqui também  
+#define W_TOPICO_SUBSCREVER "wnology/6717a1d988a602478ef5db96/command" // aqui também 
 
-#define W_BROKER "mqtt://broker.app.wnology.io:1883"  
+#define W_BROKER "mqtt://broker.app.wnology.io:1883" 
 
-#define SSID "iPhone de Ana Clara"  
+#define SSID "coqueiro" 
 
-#define PASSWORD "123456789"  
+#define PASSWORD "amigos12" 
 
 #define remedios(x) ((entradas >>x)&1)  
 
@@ -424,12 +424,75 @@ ESP_ERROR_CHECK(wifi_connect_sta(SSID, PASSWORD, 10000));
 
     /////////////////////////////////////////////////////////////////////////////////////   Início do ramo principal                      
 
-    while (1)                                                                                                                          
-    {                                                                                                                                  
 
-        //_______________________________________________________________________________________________________________________________________________________ //  
+     while (1)                                                                                                                        
+    {             
 
-        //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - -  -  -  -  -  -  -  -  -  -  Escreva seu código aqui!!! //  
+    sprintf(mensa,"{\"data\":{\"domingo\": %d,\"segunda\":%d, \"terca\": %d, \"quarta\": %d, \"quinta\": %d, \"sexta\": %d, \"sabado\" :%d }}",
+     pinosRemedios [0],
+     pinosRemedios [1],
+     pinosRemedios [2],
+     pinosRemedios [3],
+     pinosRemedios [4],
+     pinosRemedios [5],
+     pinosRemedios [6] );
+
+                 esp_mqtt_client_publish(cliente, W_TOPICO_PUBLICAR,mensa, 0,0,0);
+
+
+
+                  vTaskDelay(10000 / portTICK_PERIOD_MS);
+
+
+    detecta_remedios();
+     
+     {
+    vTaskDelay(6000 / portTICK_PERIOD_MS);  // Executa a cada minuto
+    obtain_time();  // Atualiza a hora e imprime novamente
+     }
+
+     
+    }
+
+    detecta_remedios(); 
+
+     { 
+
+    obtain_time();  // Atualiza a hora e imprime novamente 
+
+     } 
+
+ 
+
+        
+
+        //-  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  - -  -  -  -  -  -  -  -  -  -  Escreva seu só até aqui!!! // 
+
+        //____________________________________________________// 
+
+        vTaskDelay(200 / portTICK_PERIOD_MS);    // delay mínimo obrigatório, se retirar, pode causar reset do ESP 
+
+    }
+
+    
+
+    // caso erro no programa, desliga o módulo ADC 
+
+    hcf_adc_limpar(); 
+
+    }
+
+    /////////////////////////////////////////////////////////////////////////////////////   Fim do ramo principal 
+     
+     
+     
+     
+     
+     
+     
+     
+     
+      
 
    //change_day_manual();  
 
